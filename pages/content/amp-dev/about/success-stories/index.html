@@ -95,10 +95,10 @@ stage:
       <p>Here we feature interesting and outstanding pages that have been published using AMP. We kindly invite you to look through them to see what AMP is capable of.</p>
     </div>
 
-    <amp-state id="activeFilter">
+    <amp-state id="filter">
       <script type="application/json">
         {
-          "chosenFilter": "none"
+          "category": "none"
         }
       </script>
     </amp-state>
@@ -111,8 +111,8 @@ stage:
         [% else %]
         class="ap-m-filter-bubble"
         [% endif %]
-        [class]="activeFilter.chosenFilter == 'none' ? 'ap-m-filter-bubble filtered' : 'ap-m-filter-bubble'"
-        on="tap:AMP.setState({ activeFilter: {chosenFilter: 'none' } })"
+        [class]="filter.category == 'none' ? 'ap-m-filter-bubble filtered' : 'ap-m-filter-bubble'"
+        on="tap:AMP.setState({ filter: {category: 'none' } })"
         name="all">
         All
       </button>
@@ -123,8 +123,8 @@ stage:
           [% else %]
           class="ap-m-filter-bubble"
           [% endif %]
-          [class]="activeFilter.chosenFilter == '{{ category|slug }}' && chosenFilter != 'none' ? 'ap-m-filter-bubble filtered' : 'ap-m-filter-bubble'"
-          on="tap:AMP.setState({ activeFilter: {chosenFilter: '{{ category|slug }}' } })"
+          [class]="filter.category == '{{ category|slug }}' && category != 'none' ? 'ap-m-filter-bubble filtered' : 'ap-m-filter-bubble'"
+          on="tap:AMP.setState({ filter: {category: '{{ category|slug }}' } })"
           name="{{ category|slug }}">
           {{ category }}
       </button>
