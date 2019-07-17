@@ -106,7 +106,7 @@ stage:
     {% do doc.styles.addCssFile('css/components/organisms/filter-bubbles-list.css') %}
     <div class="ap-o-filter-bubbles-list">
       <button
-        [% if category not in '{{ categories }}' %]
+        [% if not category or category not in '{{ categories }}' %]
         class="ap-m-filter-bubble filtered"
         [% else %]
         class="ap-m-filter-bubble"
