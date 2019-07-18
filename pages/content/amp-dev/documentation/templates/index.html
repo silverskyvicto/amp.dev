@@ -11,6 +11,12 @@ flyout:
   description: Ready to use
   icon: template
 
+filters:
+  - Websites
+  - Stories
+  - Ads
+  - Email
+
 teaser:
   image:
     src: 'https://placehold.it/400x400'
@@ -47,10 +53,10 @@ stage:
   <section class="ap--stage ap--container-fluid">
     {% do doc.styles.addCssFile('css/components/organisms/stage.css') %}
 
-    <amp-state id="activeFilter">
+    <amp-state id="filter">
         <script type="application/json">
           {
-            "chosenFilter": "none"
+            "format": "none"
           }
         </script>
       </amp-state>
@@ -106,38 +112,60 @@ stage:
     {% endif %}
   </section>
 
-  {% set categories = g.categories('/content/amp-dev/documentation/templates', locale=doc.locale) %}
-  <section class="ap--intro ap--container">
-    <div class="ap--content">
-      <p>{{ _('Get started quickly with a ready-made design. Templates designed to work with all devices - mobile, tablet and desktop.') }}</p>
-    </div>
 
-    {% do doc.styles.addCssFile('css/components/organisms/filter-bubbles-list.css') %}
-    <div class="ap-o-filter-bubbles-list">
-      <button class="ap-m-filter-bubble filtered"
-        [class]="activeFilter.chosenFilter == 'none' ? 'ap-m-filter-bubble filtered' : 'ap-m-filter-bubble'"
-        on="tap:AMP.setState({ activeFilter: {chosenFilter: 'none' } })">
-        All
-      </button>
-      {% for category, stories in categories %}
-      <button class="ap-m-filter-bubble"
-        [class]="activeFilter.chosenFilter == '{{ category|slug }}' && chosenFilter != 'none' ? 'ap-m-filter-bubble filtered' : 'ap-m-filter-bubble'"
-        on="tap:AMP.setState({ activeFilter: {chosenFilter: '{{ category|slug }}' } })">
-        {{ category }}
-      </button>
+  {% do doc.styles.addCssFile('css/components/organisms/filter-bubbles-list.css') %}
+  <amp-state id="filter">
+    <script type="application/json">
+      {
+        "format": "none"
+      }
+    </script>
+  </amp-state>
+
+  <section class="ap-o-template-section ap-o-template-format-filter-container ap--container">
+    <p class="ap-o-template-format-filter-caption">{{ _('Get started quickly with a ready-made design. Templates designed to work with all devices - mobile, tablet and desktop.') }}</p>
+    {% do doc.icons.useIcon('icons/close.svg') %}
+
+    <ul class="ap-o-template-format-filter none" [class]="filter.format != 'none' ? 'ap-o-template-format-filter filtered' : 'ap-o-template-format-filter none' ">
+      {% for link in doc.filters %}
+        <li>
+          <button
+            class="ap-m-filter-bubble ap-m-filter-bubble-format {{link|slug}} [% if format|lower == '{{link}}'|lower %]active chosen[% elif forceFiltered %]active[% endif %]"
+            [class]="filter.format == 'none' ? 'ap-m-filter-bubble ap-m-filter-bubble-format {{link|slug}} active' : filter.format == '{{link|slug}}' ? 'ap-m-filter-bubble ap-m-filter-bubble-format {{link|slug}} active chosen' : 'ap-m-filter-bubble ap-m-filter-bubble-format {{link|slug}}'"
+            on="tap:AMP.setState({filter: {format: '{{link|slug}}' } })">
+            <div class="ap-m-filter-bubble-format-icon ap-a-ico {{link|lower}}">
+              <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#amp-{{link|lower}}"></use></svg>
+            </div>
+            {{ link }}
+            <div tabindex=0 role="reset"
+              class="ap-m-filter-bubble-format-reset ap-a-ico"
+              [class]="filter.format == '{{link|slug}}' ? 'ap-m-filter-bubble-format-reset ap-a-ico show': 'ap-m-filter-bubble-format-reset ap-a-ico'"
+              on="tap:AMP.setState({filter: {format: 'none' }})">
+              <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg>
+            </div>
+          </button>
+        </li>
       {% endfor %}
-    </div>
+    </ul>
   </section>
 
-  <section class="ap--teaser-grid ap--container">
+
+  {% set categories = g.categories('/content/amp-dev/documentation/templates', locale=doc.locale) %}
+  {% for category, stories in categories %}
+  <section class="ap-o-template-section ap--teaser-grid ap--container">
+    <div class="ap-o-template-section-title">
+      <h2 id="{{ category }}">
+        {{ category }}
+      </h2>
+    </div>
+
     <div class="ap-o-teaser-grid">
       <div class="ap-o-teaser-grid-list">
-        {% for category, stories in categories %}
         {% for teaser_doc in stories %}
         {% include '/views/partials/teaser.j2' %}
-        {% endfor %}
         {% endfor %}
       </div>
     </div>
   </section>
+  {% endfor %}
 </main>
