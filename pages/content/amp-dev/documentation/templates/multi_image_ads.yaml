@@ -1,6 +1,6 @@
 $title: Multiple Image
 $view: /views/detail/template-detail.j2
-$category: Story Ads
+$category: E-Commerce
 $order: 5
 formats:
   - ads
