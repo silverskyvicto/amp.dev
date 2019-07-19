@@ -12,7 +12,7 @@
       </div>
       {{ link }}
       <div tabindex=0 role="reset"
-        class="ap-m-filter-bubble-reset ap-a-ico [% if format|lower == '{{link}}'|lower %]show[% endif %]"
+        class="ap-m-filter-bubble-reset ap-a-ico [% if format|lower == '{{link}}'|lower %]show[% elif forceFiltered and '{link|slug}' == 'websites' %]show[% endif %]"
         [class]="filter.format == '{{link|slug}}' ? 'ap-m-filter-bubble-reset ap-a-ico show': 'ap-m-filter-bubble-reset ap-a-ico'"
         on="tap:AMP.setState({filter: {format: 'none' }})">
         <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg>
