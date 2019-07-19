@@ -92,16 +92,8 @@
     grid-column: 4 / 22;
   }
 
-  .#{organism('template-format-filter')} {
+  .#{organism('format-filter')} {
     grid-column: 4 / 22;
-    list-style: none;
-    padding: 0;
-    margin: 0 -8px;
-
-    li {
-      display: inline-block;
-      margin: 10px 8px;
-    }
   }
 
 
